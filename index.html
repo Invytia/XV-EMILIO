@@ -100,6 +100,13 @@ body{font-family:'Montserrat',sans-serif;background:var(--negro);color:var(--tex
 .big15{font-family:'Cinzel',serif;font-weight:800;font-size:clamp(7rem,32vw,15rem);line-height:1;letter-spacing:.02em}
 .medal .big15{position:relative;font-size:clamp(5.5rem,22vw,9rem);animation:shine 4s linear infinite,glowt 2.4s ease-in-out infinite alternate}
 @keyframes glowt{from{filter:drop-shadow(0 0 8px rgba(212,175,55,.4))}to{filter:drop-shadow(0 0 26px rgba(255,246,200,.95))}}
+.pass{position:relative;max-width:22rem;margin:0 auto;padding:2.2rem 1.5rem;border-radius:1.6rem;text-align:center;
+  background:linear-gradient(160deg,#241c08,#0a0a0a);border:1px solid var(--oro);box-shadow:0 0 45px rgba(212,175,55,.35);overflow:hidden}
+.pass::before,.pass::after{content:"";position:absolute;top:50%;width:26px;height:26px;margin-top:-13px;border-radius:50%;background:var(--negro);border:1px solid var(--oro)}
+.pass::before{left:-14px}.pass::after{right:-14px}
+.pass .shim{position:absolute;top:0;left:-120%;width:60%;height:100%;pointer-events:none;background:linear-gradient(100deg,transparent,rgba(246,226,122,.3),transparent);animation:sweep 4.5s ease-in-out infinite}
+#p-num{font-family:'Cinzel',serif;font-weight:800;font-size:5.5rem;line-height:1}
+.badge{display:inline-block;padding:6px 16px;border-radius:999px;border:1px solid var(--oro);font-size:10px;letter-spacing:.2em;font-weight:600;color:var(--oro-claro);background:rgba(212,175,55,.1);margin-bottom:1.2rem}
 .sep{height:1px;background:linear-gradient(90deg,transparent,var(--oro),transparent)}
 input,select,textarea{color:var(--texto)}
 input::placeholder,textarea::placeholder{color:rgba(243,235,211,.5)}
@@ -118,6 +125,7 @@ input::placeholder,textarea::placeholder{color:rgba(243,235,211,.5)}
   <symbol id="i-heart" viewBox="0 0 24 24"><path d="M20.8 5.6a5 5 0 00-7.1 0L12 7.3l-1.7-1.7a5 5 0 00-7.1 7.1l8.8 8.8 8.8-8.8a5 5 0 000-7.1z"/></symbol>
   <symbol id="i-send" viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></symbol>
   <symbol id="i-gift" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13M19 12v9H5v-9M7.5 8a2.5 2.5 0 010-5C11 3 12 8 12 8s1-5 4.5-5a2.5 2.5 0 010 5"/></symbol>
+  <symbol id="i-ticket" viewBox="0 0 24 24"><path d="M3 9a2 2 0 002-2V6h14v1a2 2 0 002 2v2a2 2 0 00-2 2v1a2 2 0 002 2v1H3v-1a2 2 0 002-2v-1a2 2 0 00-2-2z" transform="translate(0 0)"/><path d="M9 6v12" stroke-dasharray="2 2"/></symbol>
   <symbol id="i-crown" viewBox="0 0 24 24"><path d="M3 18l-1-11 5 4 5-8 5 8 5-4-1 11zM3 21h18"/></symbol>
 </svg>
 
@@ -198,6 +206,18 @@ input::placeholder,textarea::placeholder{color:rgba(243,235,211,.5)}
   </div>
 </section>
 
+<!-- PASES -->
+<section class="py-16 px-6" style="background:var(--negro)">
+  <div class="pass reveal">
+    <span class="shim"></span>
+    <div class="ring"><svg class="ic"><use href="#i-ticket"/></svg></div>
+    <p class="text-[11px] tracking-[.25em] font-semibold opacity-80">ESTA INVITACIÓN ES VÁLIDA POR</p>
+    <div id="p-num" class="gold">1</div>
+    <p id="p-txt" class="f-cin text-2xl tracking-[.3em] gold">PASE</p>
+    <p id="p-lst" class="text-xs opacity-70 mt-3">Tu lugar está reservado con mucho cariño.</p>
+  </div>
+</section>
+
 <!-- FECHA + CALENDARIO -->
 <section class="py-20 px-6 text-center" style="background:linear-gradient(to bottom,var(--negro),var(--negro2))">
   <div class="ring reveal"><svg class="ic"><use href="#i-cal"/></svg></div>
@@ -257,9 +277,15 @@ input::placeholder,textarea::placeholder{color:rgba(243,235,211,.5)}
     <h2 class="f-name text-2xl gold mb-2 tracking-widest">CONFIRMAR ASISTENCIA</h2>
     <p class="text-xs mb-6 opacity-75">Por favor confirma tu asistencia</p>
     <input id="r-nom" type="text" placeholder="Nombre completo" class="w-full p-4 mb-4 rounded-2xl outline-none bg-black border border-[color:var(--oro)]">
-    <select id="r-asi" class="w-full p-4 mb-6 rounded-2xl outline-none bg-black border border-[color:var(--oro)]">
+    <div class="badge" id="r-badge">Pases asignados: 1</div>
+    <select id="r-asi" onchange="alternar()" class="w-full p-4 mb-4 rounded-2xl outline-none bg-black border border-[color:var(--oro)]">
       <option value="Confirmado">Sí, asistiré</option><option value="No asistirá">No podré asistir</option>
     </select>
+    <div id="r-box" class="mb-6 text-left">
+      <label for="r-num" class="block text-[11px] tracking-[.2em] font-semibold mb-2 text-[color:var(--oro)]">¿CUÁNTAS PERSONAS ASISTIRÁN?</label>
+      <select id="r-num" class="w-full p-4 rounded-2xl outline-none bg-black border border-[color:var(--oro)]"></select>
+      <p class="text-[11px] opacity-70 mt-2" id="r-nota"></p>
+    </div>
     <button class="btn w-full" onclick="confirmar()"><svg class="ic"><use href="#i-send"/></svg>CONFIRMAR POR WHATSAPP</button>
   </div>
 </section>
@@ -279,6 +305,19 @@ input::placeholder,textarea::placeholder{color:rgba(243,235,211,.5)}
 
 <script>
 const WA = '526122020878';
+// Sistema de pases: invitacion.html?p=n
+const P = Math.min(Math.max(parseInt(new URLSearchParams(location.search).get('p'),10)||1,1),99);
+(function(){
+  document.getElementById('p-num').innerText=P;
+  document.getElementById('p-txt').innerText=P===1?'PASE':'PASES';
+  document.getElementById('p-lst').innerText=P===1?'Un lugar reservado especialmente para ti.':'Hay '+P+' lugares reservados para ti y tus acompañantes.';
+  document.getElementById('r-badge').innerText='Pases asignados: '+P;
+  const sel=document.getElementById('r-num');
+  for(let i=1;i<=P;i++){const o=document.createElement('option');o.value=i;o.textContent=i+(i===1?' persona':' personas');sel.appendChild(o)}
+  sel.value=P;
+  document.getElementById('r-nota').innerText=P===1?'Tu invitación incluye 1 pase.':'Puedes confirmar de 1 a '+P+' personas.';
+})();
+function alternar(){document.getElementById('r-box').style.display=document.getElementById('r-asi').value==='Confirmado'?'block':'none'}
 const audio = document.getElementById('song'), mtxt = document.getElementById('mtxt');
 const cv = document.getElementById('fx'), cx = cv.getContext('2d');
 let parts = [], W, H;
@@ -337,8 +376,15 @@ function cuenta(){
 function confirmar(){
   const n=document.getElementById('r-nom').value.trim(),a=document.getElementById('r-asi').value;
   if(!n)return alert('Por favor escribe tu nombre');
+  let c=0;
+  if(a==='Confirmado'){
+    c=parseInt(document.getElementById('r-num').value,10);
+    if(!c||c<1)return alert('Elige cuántas personas asistirán');
+    if(c>P)return alert('Tu invitación solo incluye '+P+(P===1?' pase':' pases'));
+  }
   burst(W/2,H/2,80);
-  window.open(`https://wa.me/${WA}?text=${encodeURIComponent(`¡Hola! Soy ${n}. Estado: ${a} a los XV años de Emilio (28 de noviembre de 2026).`)}`,'_blank')}
+  const det=a==='Confirmado'?`Asistentes: ${c} de ${P} ${P===1?'pase':'pases'}.`:`Pases asignados: ${P}.`;
+  window.open(`https://wa.me/${WA}?text=${encodeURIComponent(`¡Hola! Soy ${n}. Estado: ${a}. ${det} XV años de Emilio (28 de noviembre de 2026).`)}`,'_blank')}
 function deseo(){
   const m=document.getElementById('w-msg').value.trim(),n=document.getElementById('w-nom').value.trim();
   if(!m||!n)return alert('Llena ambos campos');
